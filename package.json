@@ -1,0 +1,50 @@
+{
+  "name": "bizzywig",
+  "version": "1.0.0",
+  "description": "A truly useful business document editor",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "prosemirror",
+    "editor",
+    "document",
+    "typescript",
+    "business"
+  ],
+  "author": "Kayleigh Whitehurst",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "typescript": "^5.3.0",
+    "vite": "^5.0.0",
+    "vite-plugin-dts": "^3.6.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "prosemirror-commands": "^1.5.0",
+    "prosemirror-keymap": "^1.2.0",
+    "prosemirror-model": "^1.19.0",
+    "prosemirror-schema-basic": "^1.2.0",
+    "prosemirror-schema-list": "^1.3.0",
+    "prosemirror-state": "^1.4.0",
+    "prosemirror-tables": "^1.3.0",
+    "prosemirror-transform": "^1.8.0",
+    "prosemirror-view": "^1.32.0"
+  }
+}

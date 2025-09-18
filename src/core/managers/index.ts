@@ -1,0 +1,5 @@
+export { ViewStateManager } from './ViewStateManager'
+export { ExtensionManager } from './ExtensionManager'
+export { MenuManager } from './MenuManager'
+export { DocumentManager } from './DocumentManager'
+export { PluginManager } from './PluginManager'
