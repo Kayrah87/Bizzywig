@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizzywig Demo</title>
+    <link rel="stylesheet" href="./dist/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        #app {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        h1 {
+            margin: 0;
+            padding: 16px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        #demo-container {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+        }
+        
+        .feature-demo {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-demo h3 {
+            margin-top: 0;
+            color: #007acc;
+        }
+        
+        .demo-output {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        
+        button:hover {
+            background: #005a9e;
+        }
+        
+        .architecture-diagram {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .manager-box {
+            display: inline-block;
+            background: #e3f2fd;
+            border: 2px solid #007acc;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+            font-weight: bold;
+        }
+        
+        .extension-box {
+            display: inline-block;
+            background: #f3e5f5;
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+        }
+        
+        .ui-box {
+            display: inline-block;
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>🎯 Bizzywig - Business Document Editor</h1>
+        <div id="demo-container">
+            
+            <div class="architecture-diagram">
+                <h2>🏗️ Architecture Overview</h2>
+                <div style="margin: 20px 0;">
+                    <div><strong>Core Managers:</strong></div>
+                    <div class="manager-box">ViewStateManager</div>
+                    <div class="manager-box">ExtensionManager</div>
+                    <div class="manager-box">MenuManager</div>
+                    <div class="manager-box">DocumentManager</div>
+                    <div class="manager-box">PluginManager</div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <div><strong>Built-in Extensions:</strong></div>
+                    <div class="extension-box">Default (ProseMirror)</div>
+                    <div class="extension-box">Table</div>
+                    <div class="extension-box">Font</div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <div><strong>UI Components:</strong></div>
+                    <div class="ui-box">Ribbon (Tabs→Sections→Items)</div>
+                    <div class="ui-box">Sidebar (Registerable Tabs)</div>
+                </div>
+            </div>
+
+            <div class="feature-demo">
+                <h3>🎛️ Core Registry Pattern Demo</h3>
+                <p>Test the Bizzywig core functionality and registry pattern:</p>
+                <button onclick="initializeBizzywig()">Initialize Bizzywig</button>
+                <button onclick="registerExtensions()">Register Extensions</button>
+                <button onclick="setupMenus()">Setup Menus</button>
+                <button onclick="testViewState()">Test ViewState</button>
+                <div class="demo-output" id="core-output">Click buttons to see registry pattern in action...</div>
+            </div>
+
+            <div class="feature-demo">
+                <h3>🧩 Extension System Demo</h3>
+                <p>Demonstrate the extensible architecture:</p>
+                <button onclick="showExtensions()">Show Extensions</button>
+                <button onclick="activateExtension('default')">Activate Default</button>
+                <button onclick="activateExtension('table')">Activate Table</button>
+                <button onclick="activateExtension('font')">Activate Font</button>
+                <div class="demo-output" id="extension-output">Extension management system ready...</div>
+            </div>
+
+            <div class="feature-demo">
+                <h3>📋 Menu Registry Demo</h3>
+                <p>Show the hierarchical menu system (Tabs → Sections → Items):</p>
+                <button onclick="createMenuTab()">Create Tab</button>
+                <button onclick="createMenuSection()">Create Section</button>
+                <button onclick="createMenuItem()">Create Item</button>
+                <button onclick="showMenuStructure()">Show Structure</button>
+                <div class="demo-output" id="menu-output">Menu registry system ready...</div>
+            </div>
+
+            <div class="feature-demo">
+                <h3>🎨 UI Components Demo</h3>
+                <p>Demonstrate the Ribbon and Sidebar components:</p>
+                <div id="ui-demo-area" style="border: 2px dashed #ccc; min-height: 200px; margin: 12px 0; position: relative;">
+                    <div id="ribbon-demo"></div>
+                    <div style="display: flex; height: 160px;">
+                        <div id="content-demo" style="flex: 1; background: #f9f9f9; display: flex; align-items: center; justify-content: center; color: #666;">
+                            Editor Content Area
+                        </div>
+                        <div id="sidebar-demo" style="width: 200px; background: #f8f9fa; border-left: 1px solid #ddd;"></div>
+                    </div>
+                </div>
+                <button onclick="createRibbonDemo()">Create Ribbon</button>
+                <button onclick="createSidebarDemo()">Create Sidebar</button>
+                <div class="demo-output" id="ui-output">UI components ready for demo...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the Bizzywig library
+        import { 
+            Bizzywig, 
+            DefaultExtension, 
+            TableExtension, 
+            FontExtension,
+            RibbonComponent,
+            SidebarComponent
+        } from './dist/index.es.js'
+
+        // Global demo state
+        window.demoState = {
+            bizzywig: null,
+            extensions: {},
+            ribbon: null,
+            sidebar: null
+        }
+
+        // Demo functions
+        window.initializeBizzywig = async () => {
+            try {
+                window.demoState.bizzywig = new Bizzywig()
+                await window.demoState.bizzywig.initialize()
+                
+                document.getElementById('core-output').innerHTML = 
+                    '✅ Bizzywig initialized successfully!<br>' +
+                    `📊 Managers: ViewState, Extension, Menu, Document, Plugin<br>` +
+                    `🚀 Status: Ready for extensions and UI components`
+            } catch (error) {
+                document.getElementById('core-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.registerExtensions = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('core-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                // Create and register extensions
+                const defaultExt = new DefaultExtension()
+                defaultExt.configure()
+                window.demoState.bizzywig.extensions.register(defaultExt.getConfig())
+                window.demoState.extensions.default = defaultExt
+
+                const tableExt = new TableExtension()
+                tableExt.configure()
+                window.demoState.bizzywig.extensions.register(tableExt.getConfig())
+                window.demoState.extensions.table = tableExt
+
+                const fontExt = new FontExtension()
+                fontExt.configure()
+                window.demoState.bizzywig.extensions.register(fontExt.getConfig())
+                window.demoState.extensions.font = fontExt
+
+                const registered = window.demoState.bizzywig.extensions.getRegistered()
+                document.getElementById('core-output').innerHTML = 
+                    '✅ Extensions registered successfully!<br>' +
+                    `📦 Registered: ${registered.join(', ')}<br>` +
+                    `🔧 Each extension provides schema, commands, and plugins`
+            } catch (error) {
+                document.getElementById('core-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.setupMenus = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('core-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                // Create menu structure
+                window.demoState.bizzywig.menu.registerTab({
+                    id: 'home',
+                    title: 'Home',
+                    sections: []
+                })
+
+                window.demoState.bizzywig.menu.registerSection('home', {
+                    id: 'format',
+                    title: 'Format',
+                    items: []
+                })
+
+                window.demoState.bizzywig.menu.registerItem('format', {
+                    id: 'bold',
+                    title: 'Bold',
+                    command: 'toggleBold',
+                    icon: 'B'
+                })
+
+                const tabs = window.demoState.bizzywig.menu.getTabs()
+                document.getElementById('core-output').innerHTML = 
+                    '✅ Menu system configured!<br>' +
+                    `📋 Tabs: ${tabs.length}, Structure: Tabs→Sections→Items<br>` +
+                    `🎯 Registry pattern enables dynamic menu building`
+            } catch (error) {
+                document.getElementById('core-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.testViewState = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('core-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                const initialState = window.demoState.bizzywig.viewState.getState()
+                
+                // Simulate a document change
+                window.demoState.bizzywig.viewState.applyDocumentChange({
+                    type: 'content',
+                    data: { action: 'demo-edit', text: 'Demo content change' },
+                    timestamp: Date.now()
+                })
+
+                const updatedState = window.demoState.bizzywig.viewState.getState()
+                
+                document.getElementById('core-output').innerHTML = 
+                    '✅ ViewState management working!<br>' +
+                    `📈 Document version: ${initialState.documentVersion} → ${updatedState.documentVersion}<br>` +
+                    `🔄 All changes flow through ViewStateManager to prevent stale state`
+            } catch (error) {
+                document.getElementById('core-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.showExtensions = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('extension-output').innerHTML = '⚠️ Initialize and register extensions first!'
+                return
+            }
+
+            const registered = window.demoState.bizzywig.extensions.getRegistered()
+            const active = window.demoState.bizzywig.extensions.getActive()
+            
+            document.getElementById('extension-output').innerHTML = 
+                `📦 Registered Extensions: ${registered.join(', ')}<br>` +
+                `🟢 Active Extensions: ${active.length > 0 ? active.join(', ') : 'None'}<br>` +
+                `🎯 Extensions provide schema, commands, plugins, and keymaps`
+        }
+
+        window.activateExtension = (name) => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('extension-output').innerHTML = '⚠️ Initialize and register extensions first!'
+                return
+            }
+
+            try {
+                window.demoState.bizzywig.extensions.activate(name)
+                const active = window.demoState.bizzywig.extensions.getActive()
+                
+                document.getElementById('extension-output').innerHTML = 
+                    `✅ Extension '${name}' activated!<br>` +
+                    `🟢 Currently active: ${active.join(', ')}<br>` +
+                    `⚡ Extension functionality now available`
+            } catch (error) {
+                document.getElementById('extension-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.createMenuTab = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('menu-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                window.demoState.bizzywig.menu.registerTab({
+                    id: 'demo-tab',
+                    title: 'Demo Tab',
+                    sections: []
+                })
+
+                const tabs = window.demoState.bizzywig.menu.getTabs()
+                document.getElementById('menu-output').innerHTML = 
+                    `✅ Menu tab created!<br>` +
+                    `📋 Total tabs: ${tabs.length}<br>` +
+                    `🎯 Tab IDs: ${tabs.map(t => t.id).join(', ')}`
+            } catch (error) {
+                document.getElementById('menu-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.createMenuSection = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('menu-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                window.demoState.bizzywig.menu.registerSection('demo-tab', {
+                    id: 'demo-section',
+                    title: 'Demo Section',
+                    items: []
+                })
+
+                document.getElementById('menu-output').innerHTML = 
+                    `✅ Menu section created!<br>` +
+                    `📂 Section 'Demo Section' added to 'Demo Tab'<br>` +
+                    `🔗 Structure: Tab → Section → Items`
+            } catch (error) {
+                document.getElementById('menu-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.createMenuItem = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('menu-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                window.demoState.bizzywig.menu.registerItem('demo-section', {
+                    id: 'demo-item',
+                    title: 'Demo Item',
+                    command: 'demoCommand',
+                    icon: '🚀'
+                })
+
+                document.getElementById('menu-output').innerHTML = 
+                    `✅ Menu item created!<br>` +
+                    `🎯 Item 'Demo Item' added with command 'demoCommand'<br>` +
+                    `📱 Complete hierarchy: Tab → Section → Item`
+            } catch (error) {
+                document.getElementById('menu-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.showMenuStructure = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('menu-output').innerHTML = '⚠️ Initialize Bizzywig first!'
+                return
+            }
+
+            try {
+                const tabs = window.demoState.bizzywig.menu.getTabs()
+                let structure = '📋 Menu Structure:<br>'
+                
+                tabs.forEach(tab => {
+                    structure += `├─ Tab: ${tab.title} (${tab.sections.length} sections)<br>`
+                    tab.sections.forEach(section => {
+                        structure += `   ├─ Section: ${section.title} (${section.items.length} items)<br>`
+                        section.items.forEach(item => {
+                            structure += `      ├─ Item: ${item.title} [${item.command || 'no command'}]<br>`
+                        })
+                    })
+                })
+
+                document.getElementById('menu-output').innerHTML = structure
+            } catch (error) {
+                document.getElementById('menu-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.createRibbonDemo = () => {
+            if (!window.demoState.bizzywig) {
+                document.getElementById('ui-output').innerHTML = '⚠️ Initialize Bizzywig and setup menus first!'
+                return
+            }
+
+            try {
+                const ribbonContainer = document.getElementById('ribbon-demo')
+                window.demoState.ribbon = new RibbonComponent(ribbonContainer)
+                
+                const tabs = window.demoState.bizzywig.menu.getTabs()
+                window.demoState.ribbon.setTabs(tabs)
+
+                document.getElementById('ui-output').innerHTML = 
+                    `✅ Ribbon component created!<br>` +
+                    `🎨 Displaying ${tabs.length} tabs with sections and items<br>` +
+                    `🖱️ Interactive ribbon UI now visible above`
+            } catch (error) {
+                document.getElementById('ui-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        window.createSidebarDemo = () => {
+            try {
+                const sidebarContainer = document.getElementById('sidebar-demo')
+                window.demoState.sidebar = new SidebarComponent(sidebarContainer)
+                
+                // Register demo tabs
+                window.demoState.sidebar.registerTab({
+                    id: 'props',
+                    title: 'Props',
+                    icon: '⚙',
+                    component: {
+                        render: (container) => {
+                            container.innerHTML = '<div style="padding: 8px;"><h4>Properties</h4><p>Document properties panel</p></div>'
+                        }
+                    }
+                })
+
+                window.demoState.sidebar.registerTab({
+                    id: 'ext',
+                    title: 'Ext',
+                    icon: '🧩',
+                    component: {
+                        render: (container) => {
+                            container.innerHTML = '<div style="padding: 8px;"><h4>Extensions</h4><p>Extension management panel</p></div>'
+                        }
+                    }
+                })
+
+                document.getElementById('ui-output').innerHTML = 
+                    `✅ Sidebar component created!<br>` +
+                    `📱 2 tabs registered with custom components<br>` +
+                    `👆 Click tabs in sidebar to switch panels`
+            } catch (error) {
+                document.getElementById('ui-output').innerHTML = `❌ Error: ${error.message}`
+            }
+        }
+
+        // Auto-initialize on page load
+        console.log('🎯 Bizzywig Demo Ready!')
+        console.log('📚 This demo showcases the registry pattern architecture')
+        console.log('🚀 Click buttons to explore the functionality')
+    </script>
+</body>
+</html>

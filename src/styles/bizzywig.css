@@ -1,0 +1,230 @@
+/* Bizzywig Core Styles */
+.bizzywig-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Ribbon Styles */
+.bizzywig-ribbon {
+  border-bottom: 1px solid #e1e1e1;
+  background: #f8f9fa;
+}
+
+.ribbon-tab-headers {
+  display: flex;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.ribbon-tab-header {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: background-color 0.2s;
+}
+
+.ribbon-tab-header:hover {
+  background: #e9ecef;
+}
+
+.ribbon-tab-header.active {
+  background: #fff;
+  color: #333;
+  border-bottom: 2px solid #007acc;
+}
+
+.ribbon-tab-content {
+  display: flex;
+  padding: 8px;
+  min-height: 80px;
+}
+
+.ribbon-section {
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+  padding: 4px 8px;
+  border-right: 1px solid #e1e1e1;
+}
+
+.ribbon-section:last-child {
+  border-right: none;
+}
+
+.ribbon-section-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.ribbon-section-title {
+  font-size: 11px;
+  color: #666;
+  text-align: center;
+  border-top: 1px solid #e1e1e1;
+  padding-top: 4px;
+}
+
+.ribbon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 8px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  color: #333;
+  transition: all 0.2s;
+  min-width: 50px;
+}
+
+.ribbon-item:hover:not(.disabled) {
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.ribbon-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ribbon-item-icon {
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.ribbon-item-title {
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Sidebar Styles */
+.bizzywig-sidebar {
+  width: 250px;
+  border-left: 1px solid #e1e1e1;
+  background: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-tab-buttons {
+  display: flex;
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.sidebar-tab-button {
+  flex: 1;
+  padding: 8px 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+  transition: background-color 0.2s;
+  text-align: center;
+}
+
+.sidebar-tab-button:hover {
+  background: #e9ecef;
+}
+
+.sidebar-tab-button.active {
+  background: #fff;
+  color: #333;
+  border-bottom: 2px solid #007acc;
+}
+
+.sidebar-tab-icon {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.sidebar-content {
+  flex: 1;
+  padding: 16px;
+  background: #fff;
+  overflow-y: auto;
+}
+
+/* Editor Content Area */
+.bizzywig-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.bizzywig-document {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+/* ProseMirror Editor */
+.ProseMirror {
+  outline: none;
+  min-height: 300px;
+  padding: 16px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  line-height: 1.6;
+}
+
+.ProseMirror:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+}
+
+/* Table Styles */
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.ProseMirror td, .ProseMirror th {
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  border: 1px solid #ddd;
+  padding: 3px 5px;
+}
+
+.ProseMirror th {
+  font-weight: bold;
+  text-align: left;
+  background-color: #f1f3f4;
+}
+
+.ProseMirror .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0; right: 0; top: 0; bottom: 0;
+  background: rgba(200, 200, 255, 0.4);
+  pointer-events: none;
+}
+
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px; top: 0; bottom: 0;
+  width: 4px;
+  z-index: 20;
+  background-color: #adf;
+  pointer-events: none;
+}
+
+.ProseMirror.resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
+}
